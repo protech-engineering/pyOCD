@@ -146,8 +146,8 @@ class PSoC6(CoreSightTarget):
         core1 = self.cortex_m_core_class(self.session, self.aps[2], self.memory_map, 1)
         core1.default_reset_type = self.ResetType.SW_SYSRESETREQ
 
-        self.aps[1].core = core0
-        self.aps[2].core = core1
+        self.aps[1].root_target = core0
+        self.aps[2].root_target = core1
         core0.init()
         core1.init()
         self.add_core(core0)
@@ -417,7 +417,7 @@ class PSoC64(CoreSightTarget):
     def create_psoc_core(self):
         sysap = SYS_AP_PSoC64(self.session, self.aps[0], self.memory_map, 0, self.DEFAULT_ACQUIRE_TIMEOUT)
         sysap.default_reset_type = self.ResetType.SW_SYSRESETREQ
-        self.aps[0].core = sysap
+        self.aps[0].root_target = sysap
         sysap.init()
         self.add_core(sysap)
 
@@ -425,7 +425,7 @@ class PSoC64(CoreSightTarget):
             core = self.cortex_m_core_class(self.session, self.aps[self.AP_NUM], self.memory_map, 1,
                                      self.DEFAULT_ACQUIRE_TIMEOUT)
             core.default_reset_type = self.ResetType.SW_SYSRESETREQ
-            self.aps[self.AP_NUM].core = core
+            self.aps[self.AP_NUM].root_target = core
             core.init()
             self.add_core(core)
             self.selected_core = 1

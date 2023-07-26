@@ -34,6 +34,7 @@ if TYPE_CHECKING:
     from .dap import DebugPort
     from .rom_table import CoreSightComponentID
     from ..utility.notification import Notification
+    from .generic_mem_ap import GenericMemAPTarget
 
 LOG = logging.getLogger(__name__)
 
@@ -423,7 +424,7 @@ class AccessPort:
         self.rom_addr = 0
         self.has_rom_table = False
         self.rom_table = None
-        self.core: Optional[CoreTarget] = None
+        self.root_target: Optional[Union["CoreTarget", "GenericMemAPTarget"]] = None
         self._flags = flags
         self._cmpid = cmpid
 

@@ -214,9 +214,9 @@ class CortexM(CoreTarget, CoreSightCoreComponent): # lgtm[py/multiple-calls-to-i
         core = cls(root.session, ap, root.memory_map, root._new_core_num, cmpid, address)
 
         # Associate this core with the AP.
-        if ap.core is not None:
+        if ap.root_target is not None:
             raise exceptions.TargetError(f"{ap.short_description} has multiple cores associated with it")
-        ap.core = core
+        ap.root_target = core
 
         # Add the new core to the root target.
         root.add_core(core)

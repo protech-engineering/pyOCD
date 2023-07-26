@@ -16,11 +16,16 @@
 # limitations under the License.
 
 import logging
+from typing import Any, cast, TYPE_CHECKING
 
 from .component import CoreSightCoreComponent
 from ..core import exceptions
 from ..core.target import Target
 from ..core.core_registers import CoreRegistersIndex
+from .ap import MEM_AP
+
+if TYPE_CHECKING:
+    from .coresight_target import CoreSightTarget
 
 LOG = logging.getLogger(__name__)
 
@@ -42,6 +47,23 @@ class GenericMemAPTarget(Target, CoreSightCoreComponent):
     Most of the methods in this class (except memory access methods) are empty/dummy.
     """
 
+    @classmethod
+    def factory(cls, ap: MEM_AP, cmpid=None, address=None) -> Any:
+        assert isinstance(ap, MEM_AP)
+
+        # Create a new core instance.
+        root = cast("CoreSightTarget", ap.dp.target)
+        generic_target = cls(root.session, ap)
+
+        # Associate this node with the AP.
+        if ap.root_target is not None:
+            raise exceptions.TargetError(f"{ap.short_description} already has a core associated with it")
+
+        ap.root_target = generic_target
+        root.add_child(generic_target)
+
+        return generic_target
+
     def __init__(self, session, ap, memory_map=None, core_num=0, cmpid=None, address=None):
         Target.__init__(self, session, memory_map)
         CoreSightCoreComponent.__init__(self, ap, cmpid, address)
@@ -49,9 +71,6 @@ class GenericMemAPTarget(Target, CoreSightCoreComponent):
         self.core_type = DEAD_VALUE
         self._core_registers = CoreRegistersIndex()
         self._target_context = None
-
-    def add_child(self, cmp):
-        pass
 
     @property
     def core_registers(self):

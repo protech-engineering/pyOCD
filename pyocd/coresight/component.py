@@ -24,8 +24,8 @@ class CoreSightComponent(GraphNode):
     def factory(cls, ap, cmpid, address):
         """@brief Common CoreSightComponent factory."""
         cmp = cls(ap, cmpid, address)
-        if hasattr(ap, 'core') and ap.core:
-            ap.core.add_child(cmp)
+        if hasattr(ap, 'root_target') and ap.root_target:
+            ap.root_target.add_child(cmp)
         return cmp
 
     def __init__(self, ap, cmpid=None, addr=None):

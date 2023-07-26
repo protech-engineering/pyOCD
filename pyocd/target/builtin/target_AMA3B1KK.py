@@ -160,7 +160,7 @@ class AMA3B1KK_KBR(CoreSightTarget):
         try:
             core = self.CortexM_Core(self.session, self.aps[0], self.memory_map, 0)
             core.default_reset_type = self.ResetType.SW_SYSRESETREQ
-            self.aps[0].core = core
+            self.aps[0].root_target = core
             core.init()
             self.add_core(core)
         except exceptions.Error:

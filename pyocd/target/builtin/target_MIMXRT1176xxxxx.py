@@ -848,7 +848,7 @@ class MIMXRT1176xxxxx_CM7(CoreSightTarget):
         core0 = CortexM(self.session, self.aps[0], self.memory_map, 0)
         core0.default_reset_type = self.ResetType.SW_CORE
 
-        self.aps[0].core = core0
+        self.aps[0].root_target = core0
 
         core0.init()
 
@@ -930,7 +930,7 @@ class MIMXRT1176xxxxx_CM4(CoreSightTarget):
         core = CortexM(self.session, self.aps[1], self.memory_map, 1)
         core.default_reset_type = self.ResetType.SW_CORE
 
-        self.aps[0].core = core
+        self.aps[0].root_target = core
 
         core.init()
 

@@ -38,7 +38,7 @@ class IMXRT(CoreSightTarget):
         try:
             core = CortexM7_IMXRT(self.session, self.aps[0], self.memory_map, 0)
             core.default_reset_type = self.ResetType.SW_VECTRESET
-            self.aps[0].core = core
+            self.aps[0].root_target = core
             core.init()
             self.add_core(core)
         except KeyError:

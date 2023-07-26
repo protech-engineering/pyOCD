@@ -160,7 +160,7 @@ class LPC5500Family(CoreSightTarget):
             # Create core 0 with a custom class.
             core0 = CortexM_LPC5500(self.session, self.aps[0], self.memory_map, 0)
             core0.default_reset_type = self.ResetType.SW_SYSRESETREQ
-            self.aps[0].core = core0
+            self.aps[0].root_target = core0
             core0.init()
             self.add_core(core0)
         except exceptions.Error as err:
@@ -171,7 +171,7 @@ class LPC5500Family(CoreSightTarget):
             try:
                 core1 = CortexM_v8M(self.session, self.aps[1], self.memory_map, 1)
                 core1.default_reset_type = self.ResetType.SW_SYSRESETREQ
-                self.aps[1].core = core1
+                self.aps[1].root_target = core1
                 core1.init()
                 self.add_core(core1)
             except exceptions.Error as err:

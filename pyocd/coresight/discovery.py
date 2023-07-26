@@ -21,6 +21,7 @@ from .ap import (APv1Address, APv2Address, AccessPort)
 from .dap import (ADIVersion, APAccessMemoryInterface)
 from .rom_table import (CoreSightComponentID, ROMTable)
 from . import (cortex_m, cortex_m_v8m)
+from .generic_mem_ap import GenericMemAPTarget
 from ..utility.sequencer import CallSequence
 
 LOG = logging.getLogger(__name__)
@@ -62,6 +63,12 @@ class CoreSightDiscovery(object):
     def _create_cores(self):
         self._apply_to_all_components(self._create_component,
             filter=lambda c: c.factory in (cortex_m.CortexM.factory, cortex_m_v8m.CortexM_v8M.factory))
+
+        for ap in [x for x in self.dp.aps.values() if x.rom_table]:
+            if hasattr(ap, 'root_target') and not ap.root_target:
+                LOG.debug("Creating GenericMemAPTarget component")
+                generic_mem_ap = GenericMemAPTarget.factory(ap)
+                generic_mem_ap.init()
 
     def _create_components(self):
         self._apply_to_all_components(self._create_component,

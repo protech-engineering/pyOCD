@@ -188,7 +188,7 @@ class S5JS100(CoreSightTarget):
         core = CortexM_S5JS100(
             self.session, self.aps[self.AP_NUM], self.memory_map, 0)
         core.default_reset_type = self.ResetType.SW
-        self.aps[self.AP_NUM].core = core
+        self.aps[self.AP_NUM].root_target = core
         core.init()
         self.add_core(core)
 
